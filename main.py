@@ -1,24 +1,42 @@
 import os
 import pygame
+
 from pygame import *
 from entities.background import Background
- 
+from assets_manager import Assets_manager
+
 class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.weight, self.height = 640, 400
+        self.size = self.weight, self.height = 300, 200
+        self._assets_manager = Assets_manager()
         self._objects = []
- 
+
     def on_init(self):
         # pylint: disable=no-member
         pygame.init()
-        pygame.display.set_caption('Test')
+        pygame.display.set_caption('PyKetBall')
         # pylint: disable=no-member
+
         self._display_surf = pygame.display.set_mode(self.size, pygame.constants.HWSURFACE | pygame.constants.DOUBLEBUF)
-        back = Background()
-        back.set_image(os.path.join('D:/Programming/Python/PyKetBall/assets', 'background.png'))
-        self._objects.append(back)
+
+        self._assets_manager.set_root("assets/")
+
+        images_to_load = [
+            ("player", "player.png"),
+            ("background", "background.png"),
+            ("ball", "ball.png"),
+            ("basket", "basket.png")
+        ]
+        
+        self._assets_manager.load_images(images_to_load)
+
+        bak = Background()
+        bak.set_image(self._assets_manager.get_image("background"))
+        bak.set_size(self._display_surf.get_width(), self._display_surf.get_height())
+
+        self._objects.append(bak)
         self._running = True
  
     def on_event(self, event):
