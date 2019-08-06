@@ -40,6 +40,8 @@ class App:
                 o.send_event(event)
 
     def on_loop(self):
+        for o in self._objects:
+            o.update()
         pass
 
     def on_render(self):
@@ -77,8 +79,8 @@ class App:
         ball.set_image(self._assets_manager.get_image("ball"))
         ball.set_position(100,100)
 
-        self._objects.append(bak)
-        self._objects.append(player)
+        # self._objects.append(bak)
+        # self._objects.append(player)
         self._objects.append(ball)
         pass
 
