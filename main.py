@@ -4,6 +4,7 @@ import pygame
 from pygame import *
 from entities.background import Background
 from entities.player import Player
+from entities.ball import Ball
 from assets_manager import Assets_manager
 
 class App:
@@ -20,35 +21,33 @@ class App:
         pygame.display.set_caption('PyKetBall')
         # pylint: disable=no-member
 
-        self._display_surf = pygame.display.set_mode(self.size, pygame.constants.HWSURFACE | pygame.constants.DOUBLEBUF)
+        #init display
+        self._display_surf = pygame.display.set_mode(self.size, pygame.constants.HWSURFACE | pygame.constants.DOUBLEBUF) 
         
-        self._assets_manager.load_assets()
+        #loading assets for entities
+        self._assets_manager.load_assets()  
 
-        bak = Background()
-        bak.set_image(self._assets_manager.get_image("background"))
-        bak.set_size(self._display_surf.get_width(), self._display_surf.get_height())
+        #creating entities and append it to _objects dict
+        self.init_entities() 
 
-        player = Player()
-        player.set_image(self._assets_manager.get_image("player"))
-        player.set_position(100,100)
-        player.set_size(int(self._display_surf.get_width() / 10), int(self._display_surf.get_height() / 3))
-
-        self._objects.append(bak)
-        self._objects.append(player)
         self._running = True
  
     def on_event(self, event):
         if event.type == pygame.constants.QUIT:
             self._running = False
+        if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
+            for o in self._objects:
+                o.send_event(event)
+
     def on_loop(self):
         pass
-    def on_render(self):
 
+    def on_render(self):
         for o in self._objects:
             o.draw(self._display_surf)
 
         pygame.display.flip()
-        pass
+
     def on_cleanup(self):
         # pylint: disable=no-member
         pygame.quit()
@@ -64,7 +63,25 @@ class App:
             self.on_loop()
             self.on_render()
         self.on_cleanup()
- 
+    
+    def init_entities(self):
+        bak = Background()
+        bak.set_image(self._assets_manager.get_image("background"))
+        bak.set_size(self._display_surf.get_width(), self._display_surf.get_height())
+
+        player = Player()
+        player.set_image(self._assets_manager.get_image("player"))
+        player.set_position(100,100)
+
+        ball = Ball()
+        ball.set_image(self._assets_manager.get_image("ball"))
+        ball.set_position(100,100)
+
+        self._objects.append(bak)
+        self._objects.append(player)
+        self._objects.append(ball)
+        pass
+
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
