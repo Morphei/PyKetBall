@@ -2,9 +2,9 @@ import pygame
 from entity import Entity
 from physical_object import Physical_object
 
-class Ball(Entity, Physical_object):
+class Ball(Physical_object):
     def _init__(self):
-        super.__init__()
+        Physical_object.__init__(self)
         self._mouse_down_coordinates(0,0)
 
     def mouse_down(self, event):
@@ -23,5 +23,9 @@ class Ball(Entity, Physical_object):
             self.mouse_down(event)
 
     def update(self):
-        Entity.update(self)
         Physical_object.update(self)
+
+    def collide(self, image):
+        if Physical_object.collide(self, image):
+            self._on_surface = True
+    

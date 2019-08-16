@@ -5,6 +5,7 @@ from pygame import *
 from entities.background import Background
 from entities.player import Player
 from entities.ball import Ball
+from entities.floor import Floor
 from assets_manager import Assets_manager
 
 class App:
@@ -40,11 +41,15 @@ class App:
                 o.send_event(event)
 
     def on_loop(self):
+        self._objects[0].collide(self._objects[1].get_image())
+
         for o in self._objects:
             o.update()
         pass
 
     def on_render(self):
+        self._display_surf.fill((0,0,0))
+
         for o in self._objects:
             o.draw(self._display_surf)
 
@@ -78,9 +83,15 @@ class App:
         ball = Ball()
         ball.set_image(self._assets_manager.get_image("ball"))
         ball.set_position(100,100)
+        ball.scale(0.5)
 
-        # self._objects.append(bak)
-        # self._objects.append(player)
+        floor = Floor()
+        floor.set_image(self._assets_manager.get_image("floor"))
+        floor.set_position(0,self.height - floor.get_size()[1])
+
+        #self._objects.append(bak)
+        self._objects.append(floor)
+        #self._objects.append(player)
         self._objects.append(ball)
         pass
 
