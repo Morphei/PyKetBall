@@ -21,11 +21,9 @@ class Ball(Physical_object):
             self.mouse_up(event)
         if(event.type == pygame.MOUSEBUTTONDOWN):
             self.mouse_down(event)
+        pass
 
-    def update(self):
-        Physical_object.update(self)
-
-    def collide(self, image):
-        if Physical_object.collide(self, image):
-            self._on_surface = True
+    def update(self, objects=[]):
+        Physical_object.update(self, objects)
+        pass
     

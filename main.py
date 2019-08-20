@@ -1,6 +1,10 @@
 import os
 import pygame
 
+if __name__ == "__main__":
+    import sys
+    sys.path.append(os.getcwd())
+
 from pygame import *
 from entities.background import Background
 from entities.player import Player
@@ -41,10 +45,9 @@ class App:
                 o.send_event(event)
 
     def on_loop(self):
-        self._objects[0].collide(self._objects[1].get_image())
-
         for o in self._objects:
-            o.update()
+            o.update(self._objects)
+            
         pass
 
     def on_render(self):

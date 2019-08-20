@@ -38,11 +38,8 @@ class Entity():
     def get_size(self):
         return (self._width, self._heigth)
 
-    def update(self):
+    def update(self, objects=[]):
         pass
 
     def send_event(self, event):
         pass
-
-    def collide(self, image):
-        return self._image.get_rect().colliderect(image.get_rect())
